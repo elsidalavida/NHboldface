@@ -299,15 +299,18 @@ function nextStep() {
   if (!currentEmergency) return;
   if (visibleSteps < currentEmergency.steps.length) {
     visibleSteps++;
-    stepsBackup = visibleSteps; // <-- Sincroniza el recuerdo del botón Mostrar
+    stepsBackup = visibleSteps; // Corrige desfases al soltar MOSTRAR
     updateUI();
+  }
 }
 
 function prevStep() {
   if (!currentEmergency) return;
-  if (visibleSteps > 0) visibleSteps--
-    stepsBackup = visibleSteps; // <-- Actualiza el recuerdo para evitar pasos fantasma
-  updateUI();
+  if (visibleSteps > 0) {
+    visibleSteps--;
+    stepsBackup = visibleSteps; // Sincroniza el retroceso para evitar revivir pasos
+    updateUI();
+  }
 }
 
 function showAllSteps() {

@@ -21,7 +21,7 @@ const emergencies = [
     steps: [
       { type: "warning", text: "Beware of turning rotors." },
       { type: "caution", text: "In case of emergency landing or ditching, do not jettison doors and emergency exits before touchdown to prevent possible impact with the rotors." },
-      { type: "caution", text: "Do not inflate life jackets until clear of aircraft." },
+      { type: "step", text: "Foldable cabin side ballistic protection panel (if installed and not obstructed) .................... Unlock, Open" },
       { type: "step", text: "Foldable cabin side ballistic protection panel (if installed and not obstructed) .................... Unlock, Open" },
       { type: "step", text: "Doors/Emergency exit .................... Open/Jettison" },
       { type: "header", text: "Cockpit doors, from inside/outside the aircraft" },

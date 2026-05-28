@@ -21,7 +21,8 @@ const emergencies = [
     steps: [
       { type: "warning", text: "Beware of turning rotors." },
       { type: "caution", text: "In case of emergency landing or ditching, do not jettison doors and emergency exits before touchdown to prevent possible impact with the rotors." },
-      { type: "step", text: "MEEEFoldable cabin side ballistic protection panel (if installed and not obstructed) .................... Unlock, Open" },
+      { type: "caution", text: "Do not inflate life jackets until clear of aircraft." },
+      { type: "step", text: "Foldable cabin side ballistic protection panel (if installed and not obstructed) .................... Unlock, Open" },
       { type: "step", text: "Doors/Emergency exit .................... Open/Jettison" },
       { type: "header", text: "Cockpit doors, from inside/outside the aircraft" },
       { type: "substep", text: "a.   Door jettison handle .................... Actuate downward" },
@@ -58,13 +59,10 @@ const emergencies = [
       { type: "step", text: "Autorotation .................................... Engage" },
       { type: "substep", text: "a. Collective .................................... 88% ≤ NR ≤ 110%" },
       { type: "substep", text: "b. Airspeed .................................... Adjust" },
-
       { type: "condition", text: "IF time permits" },
       { type: "substep", text: "c. Engine in flight relight .................... Perform as req" },
-
       { type: "condition", text: "ELSE no time for Engine in flight relight" },
       { type: "step", text: "c. Emergency landing checks ............ Perform" },
-
       { type: "step", text: "Autorotation Landing .................................... Perform" },
       { type: "header", text: "At about 150ft AGL" },
       { type: "substep", text: "a. Flare .................................... 15 to 20° nose up" },
@@ -74,7 +72,6 @@ const emergencies = [
       { type: "header", text: "On ground" },
       { type: "substep", text: "e. Collective .................................... Gently reduce" },
       { type: "substep", text: "f. W/B .................................... Apply" },
-
       { type: "step", text: "Emergency Rotor Braking .................... Perform" }
     ]
   },
@@ -125,7 +122,7 @@ const emergencies = [
       { location: "Audio Warning", indication: "Audio chime" },
       { location: "CWP", indication: "BFIR 1 or BFIR 2", color: "red" },
       { location: "VMD", indication: "1BFIR or BFIR2", color: "red" },
-	{ location: "MAP", indication: "WARN", color: "red" },
+      { location: "MAP", indication: "WARN", color: "red" },
       { location: "Audio Warning", indication: "Audio chime" },
       { location: "CWP", indication: "BFIR 1 and BFIR 2", color: "red" },
       { location: "VMD", indication: "BFIRE", color: "red" }
@@ -141,7 +138,7 @@ const emergencies = [
       { type: "step", text: "LAND (OR DITCH) IMMEDIATELY" },
       { type: "condition", text: "ELSE BFIR1 or BFIR2 on" },
       { type: "step", text: "FIRE EXTG .............. Test" },
-      {type: "condition", text: "IF Fire Test NOT correct (only one BFIR warning on) and IF abnormal MGB Oil Temp fast increases and/or IF signs of fire/smoke" },
+      { type: "condition", text: "IF Fire Test NOT correct (only one BFIR warning on) and IF abnormal MGB Oil Temp fast increases and/or IF signs of fire/smoke" },
       { type: "caution", text: "Even if LDG GEAR extended, select LDG GEAR EMERG sw to DOWN." },
       { type: "step", text: "Emergency landing checks .............. Perform" },
       { type: "step", text: "LDG GEAR EMERG extension ............ Perform" },
@@ -161,7 +158,6 @@ const emergencies = [
       { type: "condition", text: "On Ground" },
       { type: "step", text: "Cockpit windows ............................ Open" },
       { type: "step", text: "ECS ........................................... OFF" },
-
       { type: "condition", text: "In Flight" },
       { type: "step", text: "Level flight at Vy ............................ Establish" },
       { type: "step", text: "Doors/Windows .............................. Open as req" },
@@ -173,7 +169,7 @@ const emergencies = [
     steps: [
       { type: "warning", text: "In case the Emergency Floatation System is not installed:" },
       { type: "warning", text: "- Ramp and Hatch must be closed before ditching." },
-      { type: "warning", text:"- H/C may capsize after impact on water." },
+      { type: "warning", text: "- H/C may capsize after impact on water." },
       { type: "step", text: "Autorotation ........................................ Engage" }
     ]
   },
@@ -262,7 +258,6 @@ const emergencies = [
     steps: [
       { type: "condition", text: "On Ground" },
       { type: "step", text: "Both ENG SIF .................................... STOP" },
-
       { type: "condition", text: "In Flight" },
       { type: "step", text: "RTRBK sw .................................... Check FLIGHT" },
       { type: "step", text: "CALIPER sw .................................... STOW" }
@@ -288,9 +283,9 @@ let currentEmergency = null;
 let visibleSteps = 0;
 let stepsBackup = 0;
 
-// VARIABLES PARA EL TEMPORIZADOR DE 2 SEGUNDOS
+// VARIABLES PARA EL TEMPORIZADOR DE 2 SEGUNDOS Y BLOQUEO
 let showTimeout = null;
-let isLockedVisible = false; // Indica si se ha quedado fijo tras los 2 segundos
+let isLockedVisible = false;
 
 function newEmergency() {
   currentEmergency = emergencies[Math.floor(Math.random() * emergencies.length)];
@@ -314,7 +309,6 @@ function prevStep() {
 function showAllSteps() {
   if (!currentEmergency) return;
   
-  // Si ya estaba fijo y volvemos a pulsar, lo desactivamos (un toque para quitarlo)
   if (isLockedVisible) {
     isLockedVisible = false;
     visibleSteps = stepsBackup;
@@ -326,7 +320,6 @@ function showAllSteps() {
   visibleSteps = currentEmergency.steps.length;
   updateUI();
 
-  // Iniciar temporizador: si pasan 2 segundos pulsado, se queda fijo
   clearTimeout(showTimeout);
   showTimeout = setTimeout(() => {
     isLockedVisible = true;
@@ -336,12 +329,10 @@ function showAllSteps() {
 function hideAllSteps() {
   if (!currentEmergency) return;
   
-  clearTimeout(showTimeout); // Cancelamos el temporizador si soltó antes de 2 segundos
+  clearTimeout(showTimeout);
 
-  // Si se cumplieron los 2 segundos, no hacemos nada al soltar (se queda fijo)
   if (isLockedVisible) return;
 
-  // Si soltó rápido, volvemos a donde estaba
   visibleSteps = stepsBackup;
   updateUI();
 }
@@ -394,7 +385,7 @@ function updateUI() {
 
   stepDiv.innerHTML = html;
 
-  // AUTO-SCROLL: Desplaza la pantalla automáticamente al último paso descubierto
+  // AUTO-SCROLL: Hace que la pantalla baje sola al último paso descubierto
   stepDiv.scrollTop = stepDiv.scrollHeight;
 }
 
@@ -407,7 +398,7 @@ function renderEmergencyList(filtered) {
     item.className = "emergency-item";
     item.textContent = emerg.title;
     item.onclick = () => {
-      currentEmergency = emerg; // Soluciona el error del buscador
+      currentEmergency = emerg; // Solución al bug del buscador
       visibleSteps = 0;
       isLockedVisible = false;
       updateUI();
@@ -436,28 +427,23 @@ function closeMenu() {
 
 // ====================== EVENTOS E INICIALIZACIÓN ======================
 document.addEventListener("DOMContentLoaded", () => {
-  // Estado inicial limpio de bienvenida
   currentEmergency = null; 
   updateUI();
 
-  // Botón Siguiente Emergencia
   document.getElementById("newBtn").addEventListener("click", () => {
     isLockedVisible = false;
     newEmergency();
   });
   
-  // Flechas de avanzar y retroceder
   document.getElementById("nextStepBtn").addEventListener("click", nextStep);
   document.getElementById("prevBtn").addEventListener("click", prevStep);
 
   const showBtn = document.getElementById("showBtn");
 
-  // Eventos para PC
   showBtn.addEventListener("mousedown", () => { showAllSteps(); });
   showBtn.addEventListener("mouseup", () => { hideAllSteps(); });
   showBtn.addEventListener("mouseleave", () => { hideAllSteps(); });
 
-  // Eventos para iPhone Safari (Eliminan duplicidades y clicks fantasmas)
   showBtn.addEventListener("touchstart", (e) => {
     e.preventDefault(); 
     showAllSteps();
@@ -473,7 +459,6 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAllSteps();
   });
 
-  // Menú
   document.getElementById("menuBtn").addEventListener("click", () => {
     isLockedVisible = false;
     openMenu();

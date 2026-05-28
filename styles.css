@@ -6,6 +6,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  -webkit-text-size-adjust: 100%;
 }
 
 #title {
@@ -149,4 +150,8 @@ button:active { background: #555; }
 
 .hidden {
   display: none !important;
+}
+
+.controls button {
+  touch-action: manipulation;
 }

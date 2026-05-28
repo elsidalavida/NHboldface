@@ -24,7 +24,7 @@ const emergencies = [
       { type: "caution", text: "Do not inflate life jackets until clear of aircraft." },
 
       { type: "step", text: "Emergency Rotor Braking .................... Perform" },
-      { type: "step", text: "Foldable cabin side ballistic protection panel
+	{ type: "step", text: "Foldable cabin side ballistic protection panel
 (if installed and not obstructed) .................... Unlock, Open" },
       { type: "step", text: "Doors/Emergency exit .................... Open/Jettison" },
 
@@ -149,8 +149,7 @@ const emergencies = [
       { type: "step", text: "LAND (OR DITCH) IMMEDIATELY" },
       { type: "condition", text: "ELSE BFIR1 or BFIR2 on" },
       { type: "step", text: "FIRE EXTG .............. Test" },
-      { type: "condition", text: "IF Fire Test NOT correct (only one BFIR warning on) and IF abnormal MGB Oil Temp fast increases and/or
-IF signs of fire/smoke" },
+	{type: "condition", text: "IF Fire Test NOT correct (only one BFIR warning on) and IF abnormal MGB Oil Temp fast increases and/or IF signs of fire/smoke" },
       { type: "caution", text: "Even if LDG GEAR extended, select LDG GEAR EMERG sw to DOWN." },
       { type: "step", text: "Emergency landing checks .............. Perform" },
       { type: "step", text: "LDG GEAR EMERG extension ............ Perform" },

@@ -416,6 +416,7 @@ function closeMenu() {
 }
 
 // ====================== INICIO ======================
+
 document.addEventListener("DOMContentLoaded", () => {
   newEmergency();
 

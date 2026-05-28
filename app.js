@@ -290,19 +290,23 @@ let isLockedVisible = false;
 function newEmergency() {
   currentEmergency = emergencies[Math.floor(Math.random() * emergencies.length)];
   visibleSteps = 0;
-  isLockedVisible = false;
+  isLockedVisible = false; // <-- Limpia el candado de los 2 segundos
+  stepsBackup = 0;
   updateUI();
 }
 
 function nextStep() {
   if (!currentEmergency) return;
-  if (visibleSteps < currentEmergency.steps.length) visibleSteps++;
-  updateUI();
+  if (visibleSteps < currentEmergency.steps.length) {
+    visibleSteps++;
+    stepsBackup = visibleSteps; // <-- Sincroniza el recuerdo del botón Mostrar
+    updateUI();
 }
 
 function prevStep() {
   if (!currentEmergency) return;
-  if (visibleSteps > 0) visibleSteps--;
+  if (visibleSteps > 0) visibleSteps--
+    stepsBackup = visibleSteps; // <-- Actualiza el recuerdo para evitar pasos fantasma
   updateUI();
 }
 
@@ -398,12 +402,13 @@ function renderEmergencyList(filtered) {
     item.className = "emergency-item";
     item.textContent = emerg.title;
     item.onclick = () => {
-      currentEmergency = emerg; // Solución al bug del buscador
-      visibleSteps = 0;
-      isLockedVisible = false;
-      updateUI();
-      closeMenu();
-    };
+  currentEmergency = emerg; 
+  visibleSteps = 0;
+  isLockedVisible = false; // <-- Resetea candado
+  stepsBackup = 0;         // <-- Resetea recuerdo
+  updateUI();
+  closeMenu();
+};
     list.appendChild(item);
   });
 }

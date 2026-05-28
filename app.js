@@ -24,15 +24,12 @@ const emergencies = [
       { type: "caution", text: "Do not inflate life jackets until clear of aircraft." },
       { type: "step", text: "Foldable cabin side ballistic protection panel (if installed and not obstructed) .................... Unlock, Open" },
       { type: "step", text: "Doors/Emergency exit .................... Open/Jettison" },
-
       { type: "header", text: "Cockpit doors, from inside/outside the aircraft" },
       { type: "substep", text: "a.   Door jettison handle .................... Actuate downward" },
       { type: "substep", text: "b.   Door .................................... Push (pull) outward & forward" },
-
       { type: "header", text: "Sliding doors windows" },
       { type: "substep", text: "c.   Seal-retaining strip .................... Pull out" },
       { type: "substep", text: "d.   Windows .................................... Push out" },
-
       { type: "header", text: "Sliding Doors from inside/outside" },
       { type: "substep", text: "e.   Jettison handle cover.................... Open" },
       { type: "substep", text: "f.   Jettison handle............................ Actuate" },
@@ -59,7 +56,6 @@ const emergencies = [
     title: "AUTOROTATION",
     steps: [
       { type: "caution", text: "At heavy weight or high density altitude land with speed not less than 40 KIAS if landing site condition permits." },
-
       { type: "step", text: "Autorotation .................................... Engage" },
       { type: "substep", text: "a. Collective .................................... 88% ≤ NR ≤ 110%" },
       { type: "substep", text: "b. Airspeed .................................... Adjust" },

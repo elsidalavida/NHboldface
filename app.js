@@ -386,7 +386,7 @@ function renderEmergencyList(filtered) {
     item.className = "emergency-item";
     item.textContent = emerg.title;
     item.onclick = () => {
-      currentEmergency = emergencies[idx];
+      currentEmergency = emerg;
       visibleSteps = 0;
       updateUI();
       closeMenu();

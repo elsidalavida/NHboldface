@@ -286,35 +286,44 @@ const emergencies = [
 
 let currentEmergency = null;
 let visibleSteps = 0;
+let stepsBackup = 0;
 
-// ====================== FUNCIONES (mantengo las mismas) ======================
-function newEmergency() {
-  currentEmergency = emergencies[Math.floor(Math.random() * emergencies.length)];
-  visibleSteps = 0;
-  updateUI();
-}
-
-function nextStep() {
-  if (!currentEmergency) return;
-  if (visibleSteps < currentEmergency.steps.length) visibleSteps++;
-  updateUI();
-}
-
-function prevStep() {
-  if (!currentEmergency) return;
-  if (visibleSteps > 0) visibleSteps--;
-  updateUI();
-}
+// NUEVAS VARIABLES PARA EL TEMPORIZADOR DE 2 SEGUNDOS
+let showTimeout = null;
+let isLockedVisible = false; // Indica si se ha quedado fijo tras los 2 segundos
 
 function showAllSteps() {
   if (!currentEmergency) return;
+  
+  // Si ya estaba fijo y volvemos a pulsar, lo desactivamos (un solo toque para quitarlo)
+  if (isLockedVisible) {
+    isLockedVisible = false;
+    visibleSteps = stepsBackup;
+    updateUI();
+    return;
+  }
+
+  stepsBackup = visibleSteps;
   visibleSteps = currentEmergency.steps.length;
   updateUI();
+
+  // Iniciar temporizador: si pasan 2000ms (2 segundos), se queda fijo
+  clearTimeout(showTimeout);
+  showTimeout = setTimeout(() => {
+    isLockedVisible = true;
+  }, 2000);
 }
 
 function hideAllSteps() {
   if (!currentEmergency) return;
-  visibleSteps = 0;
+  
+  clearTimeout(showTimeout); // Cancelamos el temporizador si soltó antes de 2 segundos
+
+  // Si se cumplieron los 2 segundos, no hacemos nada al soltar (se queda fijo)
+  if (isLockedVisible) return;
+
+  // Si soltó rápido, volvemos a donde estaba
+  visibleSteps = stepsBackup;
   updateUI();
 }
 
@@ -367,6 +376,7 @@ function updateUI() {
   });
 
   stepDiv.innerHTML = html;
+  stepDiv.scrollTop = stepDiv.scrollHeight;
 }
 
 // ====================== MENÚ ======================
@@ -409,17 +419,48 @@ function closeMenu() {
 document.addEventListener("DOMContentLoaded", () => {
   newEmergency();
 
-  document.getElementById("newBtn").addEventListener("click", newEmergency);
+  document.getElementById("newBtn").addEventListener("click", () => {
+    isLockedVisible = false; // Resetear el candado al cambiar
+    newEmergency();
+  });
+  
   document.getElementById("nextStepBtn").addEventListener("click", nextStep);
   document.getElementById("prevBtn").addEventListener("click", prevStep);
 
   const showBtn = document.getElementById("showBtn");
-  showBtn.addEventListener("mousedown", showAllSteps);
-  showBtn.addEventListener("mouseup", hideAllSteps);
-  showBtn.addEventListener("mouseleave", hideAllSteps);
-  showBtn.addEventListener("touchstart", (e) => { e.preventDefault(); showAllSteps(); });
-  showBtn.addEventListener("touchend", hideAllSteps);
 
-  document.getElementById("menuBtn").addEventListener("click", openMenu);
+  // EVENTOS PARA PC (RATÓN)
+  showBtn.addEventListener("mousedown", (e) => {
+    showAllSteps();
+  });
+  showBtn.addEventListener("mouseup", (e) => {
+    hideAllSteps();
+  });
+  showBtn.addEventListener("mouseleave", (e) => {
+    hideAllSteps();
+  });
+
+  // EVENTOS PARA MÓVIL (TÁCTIL) - Totalmente aislados para evitar duplicidades en Safari
+  showBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Evita mousedown fantasma
+    showAllSteps();
+  });
+  
+  showBtn.addEventListener("touchend", (e) => {
+    e.preventDefault(); // Evita mouseup fantasma
+    hideAllSteps();
+  });
+
+  showBtn.addEventListener("touchcancel", (e) => {
+    e.preventDefault();
+    hideAllSteps();
+  });
+
+  // Modificamos el menú para que también limpie el candado si eligen otra emergencia
+  document.getElementById("menuBtn").addEventListener("click", () => {
+    isLockedVisible = false;
+    openMenu();
+  });
+  
   document.getElementById("closeMenuBtn").addEventListener("click", closeMenu);
 });

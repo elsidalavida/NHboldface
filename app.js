@@ -148,7 +148,7 @@ const emergencies = [
       { type: "step", text: "LAND (OR DITCH) IMMEDIATELY" },
       { type: "condition", text: "ELSE BFIR1 or BFIR2 on" },
       { type: "step", text: "FIRE EXTG .............. Test" },
-	{type: "condition", text: "IF Fire Test NOT correct (only one BFIR warning on) and IF abnormal MGB Oil Temp fast increases and/or IF signs of fire/smoke" },
+      {type: "condition", text: "IF Fire Test NOT correct (only one BFIR warning on) and IF abnormal MGB Oil Temp fast increases and/or IF signs of fire/smoke" },
       { type: "caution", text: "Even if LDG GEAR extended, select LDG GEAR EMERG sw to DOWN." },
       { type: "step", text: "Emergency landing checks .............. Perform" },
       { type: "step", text: "LDG GEAR EMERG extension ............ Perform" },
@@ -386,7 +386,7 @@ function renderEmergencyList(filtered) {
     item.className = "emergency-item";
     item.textContent = emerg.title;
     item.onclick = () => {
-      currentEmergency = emerg;
+      currentEmergency = emergencies[idx];
       visibleSteps = 0;
       updateUI();
       closeMenu();

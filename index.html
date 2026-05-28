@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emergency Trainer</title>
+
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="manifest" href="manifest.json"/>
+</head>
+
+<body>
+
+  <!-- Botón Menú -->
+  <button id="menuBtn" class="menu-btn">☰</button>
+
+  <div id="title">Pulsa SIGUIENTE</div>
+  <div id="step"></div>
+
+  <div class="controls">
+    <button id="showBtn">MOSTRAR</button>
+    <button id="prevBtn">←</button>
+    <button id="nextStepBtn">→</button>
+    <button id="newBtn">SIGUIENTE</button>
+  </div>
+
+  <!-- Pantalla de Menú -->
+  <div id="menuScreen" class="menu-screen hidden">
+    <div class="menu-header">
+      <button id="closeMenuBtn" class="close-btn">✕</button>
+      <h2>Emergencias</h2>
+    </div>
+    <input type="text" id="searchInput" placeholder="Buscar emergencia..." class="search-input">
+    <div id="emergencyList" class="emergency-list"></div>
+  </div>
+
+  <script src="app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+
+</body>
+</html>
